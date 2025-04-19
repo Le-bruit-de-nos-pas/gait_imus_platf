@@ -368,3 +368,27 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+# Define alpha values from -π/2 to π/2
+alpha = np.linspace(-np.pi/2, np.pi/2, 500)
+
+# Define x = α and y = sin(α)
+x = alpha
+y = np.sin(alpha)
+
+# Plotting
+plt.figure(figsize=(8, 4))
+plt.plot(alpha, x, label='x = α', linestyle='--', color='gray')
+plt.plot(alpha, y, label='y = sin(α)', color='blue')
+plt.title('Comparison of x = α and y = sin(α)')
+plt.xlabel('α (radians)')
+plt.ylabel('Value')
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
