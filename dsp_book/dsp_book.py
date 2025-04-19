@@ -155,3 +155,36 @@ plt.show()
 
 
 
+
+
+
+# Define the three sine sequences
+s1 = np.sin(np.pi * n)         # fs/2
+s2 = np.sin(np.pi * n / 2)     # fs/4
+s3 = np.zeros_like(n)          # 0 Hz
+
+# Create subplots
+fig, axs = plt.subplots(3, 1, figsize=(8, 6), sharex=True)
+
+# Plot (a) fo = fs/2
+axs[0].stem(n, s1)
+axs[0].set_title('(a) $x[n] = \sin(\pi n)$ (fo = fs/2)')
+axs[0].set_ylabel('Amplitude')
+axs[0].grid(True)
+
+# Plot (b) fo = fs/4a+
+axs[1].stem(n, s2)
+axs[1].set_title('(b) $x[n] = \sin(\pi n / 2)$ (fo = fs/4)')
+axs[1].set_ylabel('Amplitude')
+axs[1].grid(True)
+
+# Plot (c) fo = 0
+axs[2].stem(n, s3)
+axs[2].set_title('(c) $x[n] = 0$ (fo = 0 Hz)')
+axs[2].set_ylabel('Amplitude')
+axs[2].set_xlabel('n')
+axs[2].grid(True)
+
+plt.tight_layout()
+plt.show()
+
