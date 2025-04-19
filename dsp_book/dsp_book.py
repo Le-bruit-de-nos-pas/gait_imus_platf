@@ -563,3 +563,91 @@ plt.ylabel("y_D(n)")
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Time range
+n = np.arange(0, 20)
+
+# Unit impulse input
+x = np.zeros_like(n)
+x[0] = 1  # Impulse at n = 0
+
+# Initialize impulse responses
+y_comb = np.zeros_like(n, dtype=float)
+y_int = np.zeros_like(n, dtype=float)
+y_leaky = np.zeros_like(n, dtype=float)
+y_diff = np.zeros_like(n, dtype=float)
+
+# Leaky integrator coefficient
+A = 0.5
+
+# Calculate impulse responses
+for i in range(len(n)):
+    # Comb Filter
+    if i >= 4:
+        y_comb[i] = x[i] - x[i - 4]
+    else:
+        y_comb[i] = x[i]
+
+    # Integrator
+    if i == 0:
+        y_int[i] = x[i]
+    else:
+        y_int[i] = x[i] + y_int[i - 1]
+
+    # Leaky Integrator
+    if i == 0:
+        y_leaky[i] = A * x[i]
+    else:
+        y_leaky[i] = A * x[i] + (1 - A) * y_leaky[i - 1]
+
+    # Differentiator
+    if i >= 2:
+        y_diff[i] = 0.5 * x[i] - 0.5 * x[i - 2]
+    elif i == 0:
+        y_diff[i] = 0.5 * x[i]
+    else:
+        y_diff[i] = 0.0
+
+# Step responses: cumulative sum of impulse responses
+s_comb = np.cumsum(y_comb)
+s_int = np.cumsum(y_int)
+s_leaky = np.cumsum(y_leaky)
+s_diff = np.cumsum(y_diff)
+
+# Plot all step responses
+plt.figure(figsize=(12, 8))
+
+plt.subplot(4, 1, 1)
+plt.stem(n, s_comb, basefmt=" ")
+plt.title("Step Response of 4th-Order Comb Filter")
+plt.xlabel("n")
+plt.ylabel("ystep_C(n)")
+
+plt.subplot(4, 1, 2)
+plt.stem(n, s_int, basefmt=" ")
+plt.title("Step Response of Integrator")
+plt.xlabel("n")
+plt.ylabel("ystep_I(n)")
+
+plt.subplot(4, 1, 3)
+plt.stem(n, s_leaky, basefmt=" ")
+plt.title("Step Response of Leaky Integrator (A = 0.5)")
+plt.xlabel("n")
+plt.ylabel("ystep_LI(n)")
+
+plt.subplot(4, 1, 4)
+plt.stem(n, s_diff, basefmt=" ")
+plt.title("Step Response of Differentiator")
+plt.xlabel("n")
+plt.ylabel("ystep_D(n)")
+
+plt.tight_layout()
+plt.show()
+
+
