@@ -266,3 +266,23 @@ axs[2].set_xlabel("n")
 
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+
+# Define sample rate and time indices
+fs = 2500  # Hz
+n = np.arange(0, 40)  # sample indices
+m = np.sin(0.8 * np.pi * n)  # modulation signal
+
+# Plot the modulating signal
+plt.figure(figsize=(10, 3))
+plt.stem(n, m)
+plt.title("Modulating Signal m(n) = sin(0.8πn), Frequency = 1000 Hz")
+plt.xlabel("Sample Index n")
+plt.ylabel("Amplitude")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
