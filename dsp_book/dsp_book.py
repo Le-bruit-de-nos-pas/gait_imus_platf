@@ -307,3 +307,30 @@ y_9 = np.sum(x[4:10])  # x[4] to x[9] inclusive
 x_values = x[4:10]  # x[4], x[5], ..., x[9]
 
 x_values, y_9
+
+
+
+
+
+
+
+# Compute the full running sum output sequence y[n]
+# We'll start from index N-1 so we have enough samples for each sum
+y = np.array([np.sum(x[n-N+1:n+1]) for n in range(N-1, len(x))])
+
+
+# Create corresponding time indices for y[n]
+n_y = np.arange(N-1, len(x))
+
+# Plot the result
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 4))
+plt.stem(n_y, y)
+plt.title(f'{N}-Point Running Sum Output y[n]')
+plt.xlabel('n')
+plt.ylabel('y[n]')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
