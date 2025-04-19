@@ -437,3 +437,47 @@ plt.ylabel("y_shift(m)")
 
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import lfilter
+
+# Create an example input signal: x(n) = sin(2πfn), sampled at discrete intervals
+n = np.arange(0, 50)
+x = np.sin(2 * np.pi * 0.05 * n)
+
+# Define two simple FIR filters (impulse responses)
+h1 = np.array([0.5, 0.5])  # Moving average filter
+h2 = np.array([1, -1])     # Differentiator filter
+
+# Apply H1 then H2
+x_h1 = np.convolve(x, h1, mode='full')
+y1 = np.convolve(x_h1, h2, mode='full')
+
+# Apply H2 then H1
+x_h2 = np.convolve(x, h2, mode='full')
+y2 = np.convolve(x_h2, h1, mode='full')
+
+# Truncate or pad to same length for comparison (they will be same length here)
+min_len = min(len(y1), len(y2))
+y1 = y1[:min_len]
+y2 = y2[:min_len]
+n_out = np.arange(min_len)
+
+# Plot the results
+plt.figure(figsize=(10, 5))
+plt.plot(n_out[:len(x)], x, 'b-', label='(x)')
+plt.plot(n_out, y1, 'b-', label='H2(H1(x))')
+plt.plot(n_out, y2, 'r--', label='H1(H2(x))')
+plt.title('Commutative Property of LTI Systems')
+plt.xlabel('n')
+plt.ylabel('Output')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
