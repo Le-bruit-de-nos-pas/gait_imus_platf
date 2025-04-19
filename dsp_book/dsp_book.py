@@ -81,3 +81,25 @@ pi = 2 * math.asin(1.0)
 
 print(f"π calculated using 2 * asin(1.0): {pi}")
 
+
+
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Create a range of x values (excluding 0 to avoid undefined 0^0)
+x = np.linspace(0.1, 10, 100)
+y = x ** 0
+
+# Plot x^0 = 1
+plt.plot(x, y, label='x^0', color='blue')
+plt.axhline(1, color='gray', linestyle='--', linewidth=1)
+plt.title('Graph of x^0 for x ≠ 0')
+plt.xlabel('x')
+plt.ylabel('x^0')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+
