@@ -286,3 +286,24 @@ plt.ylabel("Amplitude")
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+
+import numpy as np
+
+# Define a sample input sequence x[n] (e.g., length 16)
+x = np.array([2, 4, 1, 3, 5, 2, 6, 4, 3, 7, 0, 1, 2, 3, 1, 0])
+
+# Set N = 6 for the running sum
+N = 6
+
+# Compute y(9) as the sum of x[4] through x[9]
+y_9 = np.sum(x[4:10])  # x[4] to x[9] inclusive
+
+# Show the values involved and the result
+x_values = x[4:10]  # x[4], x[5], ..., x[9]
+
+x_values, y_9
