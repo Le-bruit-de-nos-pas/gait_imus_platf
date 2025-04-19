@@ -231,3 +231,38 @@ axs[2].set_xlabel("n")
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+
+
+
+
+# High-pass filter: flip the sign of every other tap to convert low-pass to high-pass
+# This is done by multiplying by (-1)^n = cos(pi*n)
+hp_filter = b * np.cos(np.pi * np.arange(len(b)))
+
+# Filter the signals using the high-pass filter
+y_hp_0Hz = lfilter(hp_filter, a, cos_0Hz)
+y_hp_fs2 = lfilter(hp_filter, a, cos_fs2)
+y_hp_fs4 = lfilter(hp_filter, a, cos_fs4)
+
+# Plot
+fig, axs = plt.subplots(3, 1, figsize=(10, 7), sharex=True)
+
+axs[0].stem(n, y_hp_0Hz)
+axs[0].set_title("High-pass Filtered cos(0 Hz) — should be attenuated")
+axs[0].grid(True)
+
+axs[1].stem(n, y_hp_fs2)
+axs[1].set_title("High-pass Filtered cos(fs/2) — should be passed")
+axs[1].grid(True)
+
+axs[2].stem(n, y_hp_fs4)
+axs[2].set_title("High-pass Filtered cos(fs/4) — partial pass")
+axs[2].grid(True)
+axs[2].set_xlabel("n")
+
+plt.tight_layout()
+plt.show()
