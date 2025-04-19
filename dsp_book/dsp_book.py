@@ -392,3 +392,48 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define original signal x(n) = sin(pi/4 * n)
+n = np.arange(0, 16)
+x = np.sin((np.pi / 4) * n)
+
+# Decimated version of x(n): y(m) = x(2m)
+m = np.arange(0, len(n) // 2)
+y = x[2 * m]
+
+# Shifted signal x_shift(n) = x(n - 1)
+x_shift = np.sin((np.pi / 4) * (n - 1))
+
+# Decimated version of x_shift(n): y_shift(m) = x_shift(2m) = x(2m - 1)
+y_shift = np.sin((np.pi / 4) * (2 * m - 1))
+
+# Plotting
+plt.figure(figsize=(12, 6))
+
+plt.subplot(3, 1, 1)
+plt.stem(n, x, basefmt=" ")
+plt.title("Original Signal x(n)")
+plt.xlabel("n")
+plt.ylabel("x(n)")
+
+plt.subplot(3, 1, 2)
+plt.stem(m, y, linefmt='g-', markerfmt='go', basefmt=" ")
+plt.title("Decimated Signal y(m) = x(2m)")
+plt.xlabel("m")
+plt.ylabel("y(m)")
+
+plt.subplot(3, 1, 3)
+plt.stem(m, y_shift, linefmt='r-', markerfmt='ro', basefmt=" ")
+plt.title("Decimated Shifted Signal y_shift(m) = x(2m - 1)")
+plt.xlabel("m")
+plt.ylabel("y_shift(m)")
+
+plt.tight_layout()
+plt.show()
