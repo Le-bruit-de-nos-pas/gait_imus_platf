@@ -103,3 +103,55 @@ plt.legend()
 plt.show()
 
 
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Settings
+fs = 100  # Sample frequency (Hz)
+n = np.arange(0, 20)  # 20 sample points
+Ts = 1 / fs  # Sample period
+
+# Frequencies
+f0_a = fs / 2   # Case (a)
+f0_b = fs / 4   # Case (b)
+f0_c = 0        # Case (c)
+
+# Sequences
+x_a = np.cos(2 * np.pi * f0_a * n * Ts)  # Should simplify to cos(pi * n)
+x_b = np.cos(2 * np.pi * f0_b * n * Ts)  # cos(pi/2 * n)
+x_c = np.cos(2 * np.pi * f0_c * n * Ts)  # cos(0)
+
+# Plotting
+plt.figure(figsize=(12, 6))
+
+# (a) fo = fs/2
+plt.subplot(3, 1, 1)
+plt.stem(n, x_a)
+plt.title("(a) fo = fs / 2 → x[n] = cos(πn)")
+plt.ylabel("Amplitude")
+plt.grid(True)
+
+# (b) fo = fs/4
+plt.subplot(3, 1, 2)
+plt.stem(n, x_b)
+plt.title("(b) fo = fs / 4 → x[n] = cos(πn/2)")
+plt.ylabel("Amplitude")
+plt.grid(True)
+
+# (c) fo = 0
+plt.subplot(3, 1, 3)
+plt.stem(n, x_c)
+plt.title("(c) fo = 0 → x[n] = 1")
+plt.xlabel("Sample index n")
+plt.ylabel("Amplitude")
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+
+
+
