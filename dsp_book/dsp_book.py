@@ -481,3 +481,85 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define n range
+n = np.arange(0, 20)
+
+# Unit impulse input
+x = np.zeros_like(n)
+x[0] = 1  # unit impulse at n = 0
+
+# Initialize outputs
+y_comb = np.zeros_like(n)
+y_int = np.zeros_like(n)
+y_leaky = np.zeros_like(n)
+y_diff = np.zeros_like(n)
+
+# Leaky integrator parameter
+A = 0.5
+
+# Generate outputs
+for i in range(len(n)):
+    # Comb filter: yC(n) = x(n) - x(n-4)
+    if i >= 4:
+        y_comb[i] = x[i] - x[i - 4]
+    else:
+        y_comb[i] = x[i]
+
+    # Integrator: yI(n) = x(n) + yI(n-1)
+    if i == 0:
+        y_int[i] = x[i]
+    else:
+        y_int[i] = x[i] + y_int[i - 1]
+
+    # Leaky integrator: yLI(n) = A*x(n) + (1-A)*yLI(n-1)
+    if i == 0:
+        y_leaky[i] = A * x[i]
+    else:
+        y_leaky[i] = A * x[i] + (1 - A) * y_leaky[i - 1]
+
+    # Differentiator: yD(n) = 0.5*x(n) - 0.5*x(n-2)
+    if i >= 2:
+        y_diff[i] = 0.5 * x[i] - 0.5 * x[i - 2]
+    elif i == 0:
+        y_diff[i] = 0.5 * x[i]
+    else:
+        y_diff[i] = 0.0
+        
+# Plot all impulse responses
+plt.figure(figsize=(12, 8))
+
+plt.subplot(4, 1, 1)
+plt.stem(n, y_comb, basefmt=" ")
+plt.title("Impulse Response of 4th-Order Comb Filter")
+plt.xlabel("n")
+plt.ylabel("y_C(n)")
+
+plt.subplot(4, 1, 2)
+plt.stem(n, y_int, basefmt=" ")
+plt.title("Impulse Response of Integrator")
+plt.xlabel("n")
+plt.ylabel("y_I(n)")
+
+plt.subplot(4, 1, 3)
+plt.stem(n, y_leaky, basefmt=" ")
+plt.title("Impulse Response of Leaky Integrator (A = 0.5)")
+plt.xlabel("n")
+plt.ylabel("y_LI(n)")
+
+plt.subplot(4, 1, 4)
+plt.stem(n, y_diff, basefmt=" ")
+plt.title("Impulse Response of Differentiator")
+plt.xlabel("n")
+plt.ylabel("y_D(n)")
+
+plt.tight_layout()
+plt.show()
+
