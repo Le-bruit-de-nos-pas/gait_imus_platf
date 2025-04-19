@@ -10,3 +10,26 @@ def gregory_pi_approximation(n_terms):
 approx_pi = gregory_pi_approximation(1000)
 
 print(f"Approximation = {approx_pi} ") 
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Time array: simulate continuous time with high resolution
+t = np.linspace(0, 1, 1000) # 1 sec, 1000 samples
+
+# Generate a square wave that switches every 0.1s
+frequency = 5 # 5 Hz, 0.2s period
+signal = 2.5 * (1+ np.sign(np.sin(2*np.pi*frequency*t)))
+
+plt.figure(figsize=(10,4))
+plt.plot(t, signal, label='Square wave signal (0v/5v)', color='blue')
+plt.xlabel('Time (s)')
+plt.ylabel('Amplitude (V)')
+
+plt.grid(True)
+
+plt.ylim(-1, 6)
+plt.legend()
+plt.tight_layout()
+plt.show()
