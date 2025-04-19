@@ -651,3 +651,51 @@ plt.tight_layout()
 plt.show()
 
 
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the time vector
+t = np.linspace(0, 2, 1000)  # 2 seconds, fine resolution
+f0 = 1  # Fundamental frequency in Hz
+A = 1  # Amplitude
+
+# Original squarewave using first several odd harmonics
+def squarewave(t, N):
+    """Approximate squarewave using N odd harmonics."""
+    s = np.zeros_like(t)
+    for n in range(1, N+1, 2):  # Only odd harmonics
+        s += (1/n) * np.sin(2 * np.pi * n * f0 * t)
+    return (4 * A / np.pi) * s
+
+# Case 1: Full squarewave with first 7 harmonics (1 Hz to 13 Hz)
+full_square = squarewave(t, 13)
+
+# Case 2: Remove the first harmonic (i.e., start from 3rd)
+filtered_square = squarewave(t, 13) - (4 * A / np.pi) * (1/1) * np.sin(2 * np.pi * f0 * t)
+
+# Plotting
+plt.figure(figsize=(12, 6))
+
+plt.subplot(2, 1, 1)
+plt.plot(t, full_square, label='Original Squarewave (up to 13 Hz)', color='blue')
+plt.title('Original Squarewave (Fundamental and Odd Harmonics up to 13 Hz)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+
+plt.subplot(2, 1, 2)
+plt.plot(t, filtered_square, label='Filtered Squarewave (No 1 Hz)', color='red')
+plt.title('Squarewave with Fundamental Removed (Starting from 3rd Harmonic)')
+plt.xlabel('Time [s]')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+
+
