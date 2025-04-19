@@ -334,3 +334,37 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define parameters
+fs = 100  # Sampling frequency in Hz
+ts = 1 / fs  # Sampling period
+fo = 5       # Frequency of the cosine waves
+phi = np.pi / 2  # Phase shift in radians
+n = np.arange(0, 50)  # 50 sample points
+t = n * ts  # time vector
+
+# Original expression
+x_original = np.cos(2 * np.pi * fo * t + phi) + np.cos(2 * np.pi * fo * t)
+
+# Derived expression
+x_derived = 2 * np.cos(2 * np.pi * fo * t + phi / 2) * np.cos(phi / 2)
+
+# Plotting
+plt.figure(figsize=(10, 4))
+plt.stem(n, x_original, linefmt='b-', markerfmt='bo', basefmt=' ', label='Original Expression')
+plt.plot(n, x_derived, 'r--', linewidth=1.5, label='Derived Expression')
+plt.title('Comparison of Original and Derived Expressions for x(n)')
+plt.xlabel('Sample Index n')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
