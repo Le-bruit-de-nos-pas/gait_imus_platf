@@ -188,3 +188,46 @@ axs[2].grid(True)
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+
+
+from scipy.signal import lfilter
+import numpy as np
+
+# Define a simple FIR low-pass filter (e.g., moving average filter)
+# 5-point moving average
+b = np.ones(5) / 5  # Filter coefficients
+a = [1]             # FIR filter (no feedback)
+
+# Input signals: cosine at 0 Hz, fs/2, fs/4
+cos_0Hz = np.cos(2 * np.pi * 0 * n / len(n))        # DC
+cos_fs2 = np.cos(np.pi * n)                         # fs/2
+cos_fs4 = np.cos(np.pi * n / 2)                     # fs/4
+
+# Filter the signals
+y_0Hz = lfilter(b, a, cos_0Hz)
+y_fs2 = lfilter(b, a, cos_fs2)
+y_fs4 = lfilter(b, a, cos_fs4)
+
+# Plot
+fig, axs = plt.subplots(3, 1, figsize=(10, 7), sharex=True)
+
+axs[0].stem(n, y_0Hz)
+axs[0].set_title("Filtered cos(0 Hz) — Low-pass output (should pass)")
+axs[0].grid(True)
+
+axs[1].stem(n, y_fs2)
+axs[1].set_title("Filtered cos(fs/2) — Low-pass output (should attenuate)")
+axs[1].grid(True)
+
+axs[2].stem(n, y_fs4)
+axs[2].set_title("Filtered cos(fs/4) — Low-pass output (partial pass)")
+axs[2].grid(True)
+axs[2].set_xlabel("n")
+
+plt.tight_layout()
+plt.show()
+
