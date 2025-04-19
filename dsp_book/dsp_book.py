@@ -69,3 +69,15 @@ plt.ylim(-1, 6)
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+import math
+
+# Compute π using the inverse sine of 1.0
+pi = 2 * math.asin(1.0)
+
+print(f"π calculated using 2 * asin(1.0): {pi}")
+
