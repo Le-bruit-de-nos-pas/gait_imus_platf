@@ -830,3 +830,34 @@ from IPython.display import HTML
 HTML(ani.to_jshtml())
 
 
+
+
+
+# Generate frame angles for 55-minute interval sampling (aliased, appears CCW)
+angles_alias = angles_aliased
+
+# Re-create figure and axis for aliased animation
+fig_alias, ax_alias = plt.subplots(figsize=(6, 6))
+
+setup_clock_face(ax_alias)
+hand_line_alias, = ax_alias.plot([], [], 'o-', lw=3, color='red')
+
+# Initialization function
+def init_alias():
+    hand_line_alias.set_data([], [])
+    return hand_line_alias,
+
+# Animation update function
+def update_alias(frame):
+    angle = angles_alias[frame % len(angles_alias)]
+    x = [0, 0.8 * np.cos(angle)]
+    y = [0, 0.8 * np.sin(angle)]
+    hand_line_alias.set_data(x, y)
+    return hand_line_alias,
+
+# Create aliased animation
+ani_alias = animation.FuncAnimation(fig_alias, update_alias, frames=len(angles_alias),
+                                    init_func=init_alias, blit=True, interval=1000, repeat=True)
+
+plt.close(fig_alias)  # Prevent static plot
+ani_alias
