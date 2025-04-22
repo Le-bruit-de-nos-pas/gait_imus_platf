@@ -1071,3 +1071,41 @@ plt.legend(loc='upper right')
 plt.grid(True)
 plt.show()
 
+
+
+
+
+
+
+# Re-importing required libraries after code execution environment reset
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Define the sampling rate and signal frequency
+fs = 1000  # Sampling frequency in Hz
+f_signal = 700  # Signal frequency in Hz
+n_replicas = 2  # Number of replicas on either side of the baseband
+
+# Generate frequencies for aliases
+frequencies = []
+amplitudes = []
+for k in range(-n_replicas, n_replicas + 1):
+    f_pos = k * fs + f_signal
+    f_neg = k * fs - f_signal
+    frequencies.extend([f_pos, f_neg])
+    amplitudes.extend([1, 1])  # All impulses have equal amplitude for a pure sine
+
+# Plotting the spectrum
+plt.figure(figsize=(10, 4))
+plt.stem(frequencies, amplitudes, use_line_collection=True)
+plt.title("Spectrum of Sampled Signal x[n] = sin(2π700t)")
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Amplitude")
+plt.xticks(np.arange(-2000, 2001, 500))
+plt.grid(True)
+plt.xlim(-2000, 2000)
+plt.ylim(0, 1.2)
+
+plt.show()
+
+
