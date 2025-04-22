@@ -770,3 +770,53 @@ plot_clock(axs[1], angles_nyquist, 'Photos Every 20 min (Proper CW)', 'green')
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+
+import matplotlib.animation as animation
+
+fig, ax = plt.subplots(figsize=(6,6))
+
+# Plot static elements (clock face)
+def setup_clock_face(ax):
+    ax.set_aspect('equal')
+    ax.set_xlim(-1.2,1.2)
+    ax.set_ylim(-1.2,1.2)
+    ax.axis('off')
+    clock_circle = plt.Circle((0,0), 1, fill=False, linewidth=2)
+    ax.add_artist(clock_circle)
+
+    for i in range(12):
+        angle = np.deg2rad(90 - i*30)
+        x = 0.9 * np.cos(angle)
+        y = 0.9 * np.sin(angle)
+        ax.text(x, y, str(i if i != 0 else 12), ha='center', va='center', fontsize=10)
+
+
+setup_clock_face(ax)
+hand_line, = ax.plot([], [], 'o-', lw=3, color='blue')
+
+# Generate frame angles for 20-minute interval sampling (proper CW motion)
+angles = angles_nyquist
+
+# Initialization function for animation
+def init():
+    hand_line.set_data([], [])
+    return hand_line, 
+
+# Animation update function
+def update(frame):
+    angle = angles[frame % len(angles)]
+    x = [0, 0.8 * np.cos(angle)]
+    y = [0, 0.8 * np.sin(angle)]
+    hand_line.set_data(x, y)
+    return hand_line,
+
+ani = animation.FuncAnimation(fig, update, frames=len(angles), init_func=init,
+                              blit=True, interval=1000, repeat=True)
+
+plt.close(fig)
+ani
+
