@@ -699,3 +699,74 @@ plt.tight_layout()
 plt.show()
 
 
+
+
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set up clock positions
+def minute_hand_angle(minutes):
+    """Return angle in radians for given minutes on a clock (0 at top, clockwise positive)."""
+    return np.deg2rad(90 - 6*minutes) # 6 degrees per minute, 90 degree is up
+
+print(minute_hand_angle(0))
+print(minute_hand_angle(30))
+
+# Time steps in minutes
+times_aliased = np.arange(0, 5*55, 55) # every 55 min (5 steps)
+times_nyquist = np.arange(0, 5*20, 20) # every 20 min (3 rotations/hour) (5 steps)
+
+print(times_aliased)
+print(times_nyquist)
+
+# Convert to angles
+# Convert to angles
+angles_aliased = minute_hand_angle(times_aliased % 60)
+angles_nyquist = minute_hand_angle(times_nyquist % 60)
+
+print(angles_aliased)
+print(angles_nyquist)
+
+
+# Plot clock face
+def plot_clock(ax, angles, title, color):
+    ax.set_title(title)
+    ax.set_aspect('equal')
+    ax.set_xlim(-1.2, 1.2)
+    ax.set_ylim(-1.2, 1.2)
+    ax.axis('off')
+
+    # Draw clock circle
+    clock_circle = plt.Circle( (0,0), 1, fill=False, linewidth=2)
+    ax.add_artist(clock_circle)
+
+    # Draw minutes amrkers
+    for i in range(12):
+        angle = np.deg2rad(90 - i*30)
+        x = 0.9 * np.cos(angle)
+        y = 0.9 * np.sin(angle)
+        ax.text(x, y, str(i if i !=0 else 12), ha='center', va='center', fontsize=12)
+
+    # Plot minute hand positions
+    for angle in angles:
+        x = 0.8 * np.cos(angle)
+        y = 0.8 * np.sin(angle)
+        ax.plot([0,x], [0,y], color=color, linewidth=2)
+        ax.plot(x,y,'o', color=color)
+
+
+# Create plots
+fig, axs = plt.subplots(1,2,figsize=(12,6))
+
+
+plot_clock(axs[0], angles_aliased, 'Photos Every 55 min (Aliased, appears CCW)', 'red')
+plot_clock(axs[1], angles_nyquist, 'Photos Every 20 min (Proper CW)', 'green')
+
+plt.tight_layout()
+plt.show()
+
