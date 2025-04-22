@@ -869,3 +869,45 @@ ani_alias
 
 from IPython.display import HTML
 HTML(ani_alias.to_jshtml())
+
+
+
+
+# Visualize how sampling rate affects interpretation of frequency
+
+# Continuous-time signal: a 5 Hz sine wave sampled at different rates
+t_fine = np.linspace(0, 1, 1000)  # high-resolution time axis
+x_cont = np.sin(2 * np.pi * 5 * t_fine)  # 5 Hz sine wave
+
+# Sample at two different rates
+fs1 = 20  # Hz, just enough to satisfy Nyquist
+fs2 = 50  # Hz, oversampled
+
+t_samples_fs1 = np.arange(0, 1, 1/fs1)
+x_samples_fs1 = np.sin(2 * np.pi * 5 * t_samples_fs1)
+
+t_samples_fs2 = np.arange(0, 1, 1/fs2)
+x_samples_fs2 = np.sin(2 * np.pi * 5 * t_samples_fs2)
+
+# Plotting
+fig, axs = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
+
+# First subplot: fs = 20 Hz
+axs[0].plot(t_fine, x_cont, label="Original Signal (5 Hz)", color='gray')
+axs[0].stem(t_samples_fs1, x_samples_fs1, linefmt='C0-', markerfmt='C0o', basefmt=" ")
+axs[0].set_title("Sampling at 20 Hz (just above Nyquist)")
+axs[0].set_ylabel("Amplitude")
+axs[0].grid(True)
+axs[0].legend()
+
+# Second subplot: fs = 50 Hz
+axs[1].plot(t_fine, x_cont, label="Original Signal (5 Hz)", color='gray')
+axs[1].stem(t_samples_fs2, x_samples_fs2, linefmt='C1-', markerfmt='C1o', basefmt=" ")
+axs[1].set_title("Sampling at 50 Hz (oversampled)")
+axs[1].set_xlabel("Time (seconds)")
+axs[1].set_ylabel("Amplitude")
+axs[1].grid(True)
+axs[1].legend()
+
+plt.tight_layout()
+plt.show()
