@@ -1153,3 +1153,53 @@ plt.xticks(np.arange(f_min, f_max + 1, 14e6), rotation=45)
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Signal parameters
+f_start = 2e3  # 2 kHz
+f_end = 9e3    # 9 kHz
+bandwidth = f_end - f_start
+
+# Two sampling rates: one just right, one too low
+fs_good = 18e3  # Minimum valid sampling rate
+fs_bad = 12e3   # Too low: will cause overlap
+
+# Generate spectrum replicas for both sampling scenarios
+def generate_replicas(fs, num_replicas=3):
+    centers = np.arange(-num_replicas, num_replicas + 1) * fs
+    bands = [(center + f_start, center + f_end) for center in centers]
+    return bands
+
+bands_good = generate_replicas(fs_good)
+bands_bad = generate_replicas(fs_bad)
+
+# Plotting function
+def plot_replicas(bands, fs, title, ax):
+    for start, end in bands:
+        ax.fill_between([start, end], 0, 1, alpha=0.5)
+    ax.axhline(0, color='black', linewidth=0.5)
+    ax.set_title(title)
+    ax.set_xlabel("Frequency (Hz)")
+    ax.set_ylabel("Magnitude (normalized)")
+    ax.grid(True)
+    ax.set_xlim(-40e3, 40e3)
+    ax.set_ylim(0, 1.2)
+    ax.set_xticks(np.arange(-40e3, 41e3, fs))
+    ax.axvline(-fs/2, color='red', linestyle='--', label='-fs/2')
+    ax.axvline(fs/2, color='red', linestyle='--', label='fs/2')
+    ax.legend()
+
+# Plot both cases
+fig, axs = plt.subplots(2, 1, figsize=(12, 6), sharex=True)
+plot_replicas(bands_good, fs_good, "Spectrum with fs = 18 kHz (No Overlap)", axs[0])
+plot_replicas(bands_bad, fs_bad, "Spectrum with fs = 12 kHz (Aliasing Occurs)", axs[1])
+
+plt.tight_layout()
+plt.show()
+
+
