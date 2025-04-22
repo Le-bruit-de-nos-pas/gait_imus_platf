@@ -820,3 +820,13 @@ ani = animation.FuncAnimation(fig, update, frames=len(angles), init_func=init,
 plt.close(fig)
 ani
 
+
+
+
+
+
+
+from IPython.display import HTML
+HTML(ani.to_jshtml())
+
+
