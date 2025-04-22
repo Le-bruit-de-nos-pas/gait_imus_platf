@@ -1002,7 +1002,7 @@ for i, f0 in enumerate(frequencies, 1):
     
     # Plot magnitude spectrum (only positive freqs)
     plt.subplot(3, 1, i)
-    plt.stem(freqs[:N//2], np.abs(X_f[:N//2]), basefmt="k-", use_line_collection=True)
+    plt.stem(freqs[:N//2], np.abs(X_f[:N//2]), basefmt="k-")
     plt.title(f'FFT Magnitude Spectrum for $f_0 = {f0}$ Hz (sampled at {fs} Hz)')
     plt.xlabel('Frequency (Hz)')
     plt.ylabel('Magnitude')
