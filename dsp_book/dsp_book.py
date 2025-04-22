@@ -861,3 +861,11 @@ ani_alias = animation.FuncAnimation(fig_alias, update_alias, frames=len(angles_a
 
 plt.close(fig_alias)  # Prevent static plot
 ani_alias
+
+
+
+
+
+
+from IPython.display import HTML
+HTML(ani_alias.to_jshtml())
