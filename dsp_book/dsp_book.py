@@ -946,3 +946,38 @@ plt.ylabel("Amplitude")
 plt.grid(True)
 plt.legend()
 plt.show()
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Given values
+fs = 160  # Sampling rate in Hz
+n = np.arange(0, 16)  # Sample indices
+t_cont = np.linspace(0, 15 / fs, 1000)  # Continuous time for smooth curves
+
+# Frequencies to test
+frequencies = [20, 140, 180]  # Hz
+
+# Plotting
+plt.figure(figsize=(12, 6))
+
+for i, f0 in enumerate(frequencies, 1):
+    # Continuous signal
+    x_cont = np.sin(2 * np.pi * f0 * t_cont)
+    # Discrete signal
+    x_disc = np.sin(2 * np.pi * f0 * n / fs)
+    
+    plt.subplot(1, 3, i)
+    plt.plot(t_cont, x_cont, label=f'Continuous ({f0} Hz)', color='gray', alpha=0.7)
+    plt.stem(n / fs, x_disc, linefmt='C0-', markerfmt='C0o', basefmt='k-', label='Sampled')
+    plt.title(f'$f_0 = {f0}$ Hz')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Amplitude')
+    plt.grid(True)
+    plt.legend()
+
+plt.tight_layout()
+plt.suptitle("Sampling sinusoids at $f_s = 160$ Hz", fontsize=14, y=1.05)
+plt.show()
+
