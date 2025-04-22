@@ -1109,3 +1109,47 @@ plt.ylim(0, 1.2)
 plt.show()
 
 
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+fs = 56e6  # Sampling rate in Hz
+fc = 70e6  # Center frequency of the original signal in Hz
+bw = 14e6  # Bandwidth in Hz
+f_min, f_max = -70e6, 70e6  # Plotting range
+
+# Aliased center frequencies within range [-70 MHz, 70 MHz]
+k_vals = range(-3, 4)  # Enough to cover the full range
+aliases = []
+
+for k in k_vals:
+    alias_center = abs(fc - k * fs)
+    if f_min <= alias_center <= f_max:
+        aliases.append(alias_center)
+    if f_min <= -alias_center <= f_max:
+        aliases.append(-alias_center)
+
+# Create frequency points for plotting each band (± BW/2 around each center)
+bands = [(center - bw / 2, center + bw / 2) for center in aliases]
+
+# Plotting
+plt.figure(figsize=(12, 4))
+for start, end in bands:
+    plt.fill_between([start, end], 0, 1, alpha=0.4)
+
+# Reference lines and formatting
+plt.axhline(0, color='black', linewidth=0.5)
+plt.title("Spectrum of Sampled Signal x(n) over [-70 MHz, 70 MHz]")
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Magnitude (normalized)")
+plt.grid(True)
+plt.xlim(f_min, f_max)
+plt.ylim(0, 1.2)
+plt.xticks(np.arange(f_min, f_max + 1, 14e6), rotation=45)
+
+plt.tight_layout()
+plt.show()
+
