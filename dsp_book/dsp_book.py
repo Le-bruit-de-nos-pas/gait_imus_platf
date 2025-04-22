@@ -911,3 +911,38 @@ axs[1].legend()
 
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define signal parameters
+f0 = 1000 # Hz frequency of the continuous sinewave
+f2 = 2000# Hz sampling rate (Nyquist rate = fs = 2*f0)
+phi = np.pi/2 # phase shift (90 degress to force zero crossings at sampling)
+
+# Define time vector
+t_cont = np.linspace(0, 0.03, 5000) # 4 cycles
+x_cont = np.cos(2*np.pi * f0 * t_cont + phi)
+
+# define sample points
+n = np.arange(0, 4) # 4 samples
+t_samp = n/fs # 4 / 2000
+x_samp = np.cos(2*np.pi * f0 * t_samp + phi)
+
+print("sampled values:", x_samp)
+
+# Plot
+plt.figure(figsize=(10, 4))
+plt.plot(t_cont, x_cont, label="Continuous Signql")
+plt.stem(t_samp, x_samp, linefmt="r-", markerfmt="ro", basefmt="k-", label="Sampled points")
+plt.title("Sampling a sinusoid at nyquist rate with phase shift")
+plt.xlabel("Time (s)")
+plt.ylabel("Amplitude")
+plt.grid(True)
+plt.legend()
+plt.show()
