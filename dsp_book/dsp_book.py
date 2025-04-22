@@ -1097,7 +1097,7 @@ for k in range(-n_replicas, n_replicas + 1):
 
 # Plotting the spectrum
 plt.figure(figsize=(10, 4))
-plt.stem(frequencies, amplitudes, use_line_collection=True)
+plt.stem(frequencies, amplitudes)
 plt.title("Spectrum of Sampled Signal x[n] = sin(2π700t)")
 plt.xlabel("Frequency (Hz)")
 plt.ylabel("Amplitude")
