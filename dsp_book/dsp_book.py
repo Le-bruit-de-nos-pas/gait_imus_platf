@@ -981,3 +981,34 @@ plt.tight_layout()
 plt.suptitle("Sampling sinusoids at $f_s = 160$ Hz", fontsize=14, y=1.05)
 plt.show()
 
+
+
+from scipy.fft import fft, fftfreq
+
+# Parameters for FFT
+N = 64  # number of samples for FFT
+t_fft = np.arange(N) / fs  # time vector for sampled signal
+
+# Prepare plot
+plt.figure(figsize=(12, 8))
+
+for i, f0 in enumerate(frequencies, 1):
+    # Discrete signal sampled at fs
+    x_n = np.sin(2 * np.pi * f0 * t_fft)
+    
+    # Compute FFT
+    X_f = fft(x_n)
+    freqs = fftfreq(N, 1/fs)
+    
+    # Plot magnitude spectrum (only positive freqs)
+    plt.subplot(3, 1, i)
+    plt.stem(freqs[:N//2], np.abs(X_f[:N//2]), basefmt="k-", use_line_collection=True)
+    plt.title(f'FFT Magnitude Spectrum for $f_0 = {f0}$ Hz (sampled at {fs} Hz)')
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('Magnitude')
+    plt.grid(True)
+
+plt.tight_layout()
+plt.suptitle("FFT of Sampled Signals", fontsize=14, y=1.02)
+plt.show()
+
