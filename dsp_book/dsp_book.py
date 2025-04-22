@@ -1012,3 +1012,62 @@ plt.tight_layout()
 plt.suptitle("FFT of Sampled Signals", fontsize=14, y=1.02)
 plt.show()
 
+
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Sampling rate and frequency ranges
+fs = 1000  # Sampling rate (Hz)
+f_max = fs / 2  # Nyquist frequency (Hz)
+
+# Analog frequency segments (in Hz)
+analog_segments = {
+    '1': (0, 250),
+    '2': (250, 500),
+    '3': (500, 750),
+    '4': (750, 1000),
+    '5': (1000, 1250),
+    '6': (1250, 1500),
+}
+
+# Discrete frequency spectrum (in Hz)
+discrete_segments = {
+    'A': (-500, -333),
+    'B': (-333, -167),
+    'C': (-167, 0),
+    'D': (0, 167),
+    'E': (167, 333),
+    'F': (333, 500),
+}
+
+# Generate the x-axis for plotting (frequency in Hz)
+x = np.linspace(-f_max * 2, f_max * 2, 1000)
+
+# Plot the analog spectrum, using vertical lines to represent the segments
+plt.figure(figsize=(10, 6))
+
+# Plot the analog spectrum segments
+for segment, (start, end) in analog_segments.items():
+    plt.axvline(x=start, color='black', linestyle='--', label=f'Analog Segment {segment} ({start}-{end} Hz)')
+    plt.axvline(x=end, color='black', linestyle='--')
+
+# Plot the discrete spectrum segments
+for segment, (start, end) in discrete_segments.items():
+    plt.fill_between(x, 0, 1, where=(x >= start) & (x <= end), alpha=0.2, label=f'Discrete Segment {segment} ({start}-{end} Hz)')
+
+# Customize plot
+plt.xlim(-f_max * 2, f_max * 2)
+plt.ylim(0, 1)
+plt.title('Analog and Discrete Spectrum with Aliasing')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Magnitude')
+plt.legend(loc='upper right')
+
+plt.grid(True)
+plt.show()
+
