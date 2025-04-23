@@ -1299,3 +1299,37 @@ plt.ylim(0, 1.2)
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+B = 4e3  # 4 kHz bandwidth
+fs = 16e3  # 16 kHz sampling rate
+f_stop = fs - B  # Frequency where attenuation must be -60 dB
+
+# Frequency axis (0 to 2*fs for showing replicas)
+f = np.linspace(0, 2*fs, 1000)
+
+# Ideal filter response
+H = np.piecewise(f, [f <= B, (f > B) & (f < f_stop), f >= f_stop],
+                 [0, lambda f: -60 * (f - B) / (f_stop - B), -60])
+
+# Plotting
+plt.figure(figsize=(12, 4))
+plt.plot(f / 1e3, H, label='Anti-aliasing filter response')
+plt.axvline(B / 1e3, color='green', linestyle='--', label='Bandwidth B = 4 kHz')
+plt.axvline(f_stop / 1e3, color='red', linestyle='--', label='-60 dB point = fs - B = 12 kHz')
+
+plt.title("Anti-Aliasing Filter Design: Attenuation Requirement")
+plt.xlabel("Frequency (kHz)")
+plt.ylabel("Attenuation (dB)")
+plt.grid(True)
+plt.legend()
+plt.ylim(-70, 5)
+plt.tight_layout()
+plt.show()
+
