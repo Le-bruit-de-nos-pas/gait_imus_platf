@@ -1203,3 +1203,49 @@ plt.tight_layout()
 plt.show()
 
 
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Signal range
+f_low = 247
+f_high = 1175
+bandwidth = f_high-f_low
+
+# Minimum fs for bandpass sampling
+fs_min = 2*bandwidth
+
+# create replicas for ploting
+def generate_bandpass_replicas(fs, num_replicas=3):
+    centers = np.arange(-num_replicas, num_replicas+1) * fs
+    #print(centers)
+    bands = [(center+f_low, center+f_high) for center in centers]
+    #print(bands)
+    return bands
+
+bands = generate_bandpass_replicas(fs_min)
+
+
+# Plotting
+plt.figure(figsize=(12,3))
+for start, end in bands:
+    plt.fill_between([start,end], 0, 1, alpha=0.4)
+
+# Formatting
+plt.axhline(0, color="black", linewidth=0.5)
+plt.title(f"Soprano voice bandpass sampling spectrum (fs= {fs_min:.0f} Hz)")
+plt.xlabel("Frequency Hz")
+plt.ylabel("magnitude normalized")
+plt.grid()
+plt.xlim(-6000, 6000)
+plt.ylim(0, 1.2)
+plt.xticks(np.arange(-6000,6000+1, fs_min))
+plt.axvline(-fs_min/2, color="red", linestyle='--', label='-fs/2')
+plt.axvline(fs_min/2, color="red", linestyle='--', label='fs/2')
+plt.legend()
+plt.tight_layout()
+plt.show()
