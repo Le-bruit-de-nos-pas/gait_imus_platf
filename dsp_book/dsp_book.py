@@ -1249,3 +1249,53 @@ plt.axvline(fs_min/2, color="red", linestyle='--', label='fs/2')
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+f_signal = 15  # MHz, original center frequency of signal
+fs = 12        # MHz, sample rate
+target_fc = fs / 4  # Target center frequency after mixing
+
+# Compute possible LO frequencies
+f_LO_min = f_signal - target_fc
+f_LO_max = f_signal + target_fc
+
+# Frequencies for plotting
+freqs = np.linspace(-20, 20, 1000)
+
+# Generate spectra
+def band_spectrum(center, width=2, label=None):
+    start = center - width / 2
+    end = center + width / 2
+    plt.fill_between([start, end], 0, 1, alpha=0.5, label=label)
+
+plt.figure(figsize=(14, 4))
+
+# Plot original signal at f_signal
+band_spectrum(f_signal, width=2, label="Original signal @ 15 MHz")
+
+# Plot possible image spectrum locations after mixing
+band_spectrum(target_fc, width=2, label="Target IF @ 3 MHz (fs/4)")
+band_spectrum(-target_fc, width=2, label="Negative IF @ -3 MHz")
+
+# Plot corresponding LO frequencies
+plt.axvline(f_LO_min, color='red', linestyle='--', label=f'f_LO min = {f_LO_min:.1f} MHz')
+plt.axvline(f_LO_max, color='green', linestyle='--', label=f'f_LO max = {f_LO_max:.1f} MHz')
+
+# Formatting
+plt.title("Mixer Operation and Spectral Centering at fs/4 (3 MHz)")
+plt.xlabel("Frequency (MHz)")
+plt.ylabel("Magnitude")
+plt.grid(True)
+plt.legend()
+plt.xlim(-10, 25)
+plt.ylim(0, 1.2)
+plt.tight_layout()
+plt.show()
+
