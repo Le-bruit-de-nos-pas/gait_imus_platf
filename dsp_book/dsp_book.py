@@ -1333,3 +1333,40 @@ plt.ylim(-70, 5)
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Given parameters
+fc = 25_000  # Center frequency in Hz
+B = 5_000    # Bandwidth in Hz
+
+# Compute valid sampling frequency ranges for m = 5 to 15
+m_values = np.arange(5, 16)
+lower_bounds = (2 * fc - B) / m_values
+upper_bounds = (2 * fc + B) / (m_values + 1)
+
+# Plotting
+plt.figure(figsize=(10, 6))
+for i, m in enumerate(m_values):
+    plt.plot([lower_bounds[i], upper_bounds[i]], [m, m], marker='|', color='blue', linewidth=4)
+
+# Labels and formatting
+plt.title("Valid Bandpass Sampling Frequency Ranges for Different m Values", fontsize=14)
+plt.xlabel("Sampling Frequency $f_s$ (Hz)", fontsize=12)
+plt.ylabel("m (Integer)", fontsize=12)
+plt.grid(True)
+plt.xlim(4000, 10000)
+plt.ylim(4.5, 15.5)
+plt.yticks(m_values)
+plt.tight_layout()
+
+plt.show()
+
+
