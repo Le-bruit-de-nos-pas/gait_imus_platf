@@ -1447,3 +1447,44 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Define sample rate
+fs = 44100  # Hz
+
+# Define a range of N values
+N_values = np.arange(1000, 50000, 1000)  # from 1000 to 49000 samples
+delta_f_values = fs / N_values  # corresponding frequency spacings
+duration_values = N_values / fs  # corresponding durations in seconds
+
+# Create figure
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+
+# Plot delta_f vs N
+ax1.plot(N_values, delta_f_values, marker='o')
+ax1.axhline(1, color='red', linestyle='--', label='Target Δf = 1 Hz')
+ax1.set_title('DFT Frequency Spacing vs. Number of Samples (N)', fontsize=14)
+ax1.set_xlabel('Number of DFT Points (N)', fontsize=12)
+ax1.set_ylabel('Frequency Spacing (Δf) [Hz]', fontsize=12)
+ax1.grid(True)
+ax1.legend()
+
+# Plot duration vs N
+ax2.plot(N_values, duration_values, marker='s', color='green')
+ax2.axhline(1, color='purple', linestyle='--', label='Target Duration = 1 sec')
+ax2.set_title('Signal Duration vs. Number of Samples (N)', fontsize=14)
+ax2.set_xlabel('Number of DFT Points (N)', fontsize=12)
+ax2.set_ylabel('Time Duration [seconds]', fontsize=12)
+ax2.grid(True)
+ax2.legend()
+
+plt.tight_layout()
+plt.show()
+
