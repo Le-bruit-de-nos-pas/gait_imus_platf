@@ -1414,3 +1414,36 @@ plt.legend(loc='upper right')
 plt.tight_layout()
 plt.show()
 
+
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Sampling rate
+fs = 1000  # Hz
+
+# Range of N values to consider
+N_values = np.arange(10, 60)  # from 10 to 59 samples
+
+# Corresponding delta f values
+delta_f = fs / N_values
+
+# Target delta f
+target_delta_f = 45  # Hz
+
+# Plot
+plt.figure(figsize=(10, 6))
+plt.plot(N_values, delta_f, marker='o', label=r'$\Delta f = f_s / N$')
+plt.axhline(target_delta_f, color='red', linestyle='--', label='Target 45 Hz')
+plt.scatter(22, fs/22, color='green', s=100, label=r'Closest: $N=22$ ($\Delta f \approx 45.45$ Hz)')
+plt.scatter(23, fs/23, color='purple', s=100, label=r'Closest: $N=23$ ($\Delta f \approx 43.48$ Hz)')
+
+# Labels and title
+plt.title('DFT Frequency Spacing vs. Number of Samples (N)', fontsize=14)
+plt.xlabel('Number of DFT Points (N)', fontsize=12)
+plt.ylabel('Frequency Spacing (Δf) [Hz]', fontsize=12)
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
