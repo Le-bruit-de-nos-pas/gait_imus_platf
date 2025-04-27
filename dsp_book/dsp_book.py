@@ -1370,3 +1370,47 @@ plt.tight_layout()
 plt.show()
 
 
+
+
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# DFT size
+N = 20
+
+# Create an array of sample indices
+m = np.arange(N)
+
+# Create labels for the points
+labels = [f'X({i})' for i in range(N)]
+
+# Create colors: 
+# Green for directly sent values, blue for conjugated (recoverable) values
+colors = ['green' if (i <= 10) else 'blue' for i in m]
+
+# Plot
+plt.figure(figsize=(12, 2))
+plt.scatter(m, np.zeros_like(m), c=colors, s=100)
+
+# Annotate each point
+for i in range(N):
+    plt.text(m[i], 0.02, labels[i], ha='center', va='bottom', fontsize=9, rotation=45)
+
+# Axis formatting
+plt.yticks([])
+plt.title('20-Point DFT: Values to Send vs Recover by Symmetry', fontsize=14)
+plt.xlabel('DFT Index (m)', fontsize=12)
+plt.axhline(0, color='black', linewidth=0.5)
+plt.grid(False)
+plt.xlim(-1, 20)
+
+# Legend
+plt.scatter([], [], c='green', label='Values to Send (Original)')
+plt.scatter([], [], c='blue', label='Values Recovered by Symmetry')
+plt.legend(loc='upper right')
+
+plt.tight_layout()
+plt.show()
+
