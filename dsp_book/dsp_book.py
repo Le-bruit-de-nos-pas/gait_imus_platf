@@ -1488,3 +1488,42 @@ ax2.legend()
 plt.tight_layout()
 plt.show()
 
+
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Parameters
+fs = 3000  # Hz
+fmax = fs / 2  # 1500 Hz
+replication_spacing = fs  # 3000 Hz
+
+# Frequency axis
+f = np.linspace(-6000, 6000, 1000)  # frequency range from -6000 Hz to 6000 Hz
+
+# Create a simple spectrum: nonzero between -fmax and fmax
+X = np.zeros_like(f)
+X[np.abs(f) <= fmax] = 1  # flat spectrum between -1500 Hz and 1500 Hz
+
+# Create replications by shifting
+X_rep1 = np.roll(X, int(replication_spacing / (f[1] - f[0])))
+X_rep2 = np.roll(X, -int(replication_spacing / (f[1] - f[0])))
+
+# Plot
+plt.figure(figsize=(12, 6))
+plt.plot(f, X, label='Original Spectrum', color='blue')
+plt.plot(f, X_rep1, label='Replication +fs', color='green', linestyle='--')
+plt.plot(f, X_rep2, label='Replication -fs', color='red', linestyle='--')
+
+# Decorations
+plt.title('Spectrum and Replications (Sampling at 3000 Hz)', fontsize=14)
+plt.xlabel('Frequency [Hz]', fontsize=12)
+plt.ylabel('Amplitude', fontsize=12)
+plt.grid(True)
+plt.axvline(0, color='black', linestyle=':')
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+
