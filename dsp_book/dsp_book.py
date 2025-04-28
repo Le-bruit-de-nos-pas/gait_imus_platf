@@ -1662,3 +1662,39 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+N = 64  # Number of points
+
+# Time index
+n = np.arange(N)
+
+# Standard Hanning window (textbook formula)
+h_standard = 0.5 * (1 - np.cos(2 * np.pi * n / (N - 1)))
+
+# Alternate Hanning window (sin^2 formula)
+h_alternate = np.sin(np.pi * n / (N - 1))**2
+
+# Plotting
+plt.figure(figsize=(10, 5))
+plt.plot(n, h_standard, label='Standard Hanning', linestyle='-', marker='o', markersize=4)
+plt.plot(n, h_alternate, label='Alternate sin² Form', linestyle='--', marker='x', markersize=4)
+plt.title('Comparison of Hanning Window Definitions')
+plt.xlabel('Sample index n')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+# Optional: Check numerical difference
+error = np.max(np.abs(h_standard - h_alternate))
+print(f'Maximum absolute difference between the two definitions: {error:.2e}')
+
