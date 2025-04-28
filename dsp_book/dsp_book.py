@@ -1609,3 +1609,56 @@ plt.grid(True)
 plt.xlim(0, 2000)  # Show up to 2 kHz
 plt.show()
 
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Function to create repeated Hanning windows
+def repeated_hanning(K, N=16):
+    h1 = 0.5 * (1 - np.cos(2 * np.pi * np.arange(N) / (N - 1)))
+    return np.tile(h1, K)
+
+# Parameters
+N = 16
+K2 = 2  # Two repetitions
+K3 = 3  # Three repetitions
+
+# Create sequences
+h2 = repeated_hanning(K2, N)
+h3 = repeated_hanning(K3, N)
+
+# Compute DFTs
+H2 = np.fft.fft(h2)
+H3 = np.fft.fft(h3)
+
+# DFT bin indices
+m_H2 = np.arange(len(h2))
+m_H3 = np.arange(len(h3))
+
+# Only plot positive frequencies (up to half)
+half_H2 = len(h2) // 2
+half_H3 = len(h3) // 2
+
+# Plotting
+plt.figure(figsize=(12, 6))
+
+plt.subplot(2, 1, 1)
+plt.stem(m_H2[:half_H2], np.abs(H2[:half_H2]), basefmt=" ")
+plt.title('|H2(m)| Spectrum (Two Repetitions)')
+plt.xlabel('DFT Bin Index m')
+plt.ylabel('Magnitude')
+plt.grid(True)
+
+plt.subplot(2, 1, 2)
+plt.stem(m_H3[:half_H3], np.abs(H3[:half_H3]), basefmt=" ")
+plt.title('|H3(m)| Spectrum (Three Repetitions)')
+plt.xlabel('DFT Bin Index m')
+plt.ylabel('Magnitude')
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+
