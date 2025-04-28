@@ -1567,3 +1567,45 @@ plt.xlim(0, 2000)  # Show up to 2 kHz
 plt.show()
 
 
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+fs = 22255  # Sampling frequency in Hz
+N = 902     # Number of samples
+f0 = 220    # Fundamental frequency (A3)
+t = np.arange(N) / fs  # Time vector
+
+# Create a signal with harmonics
+harmonics = [1, 2, 3, 4, 5, 6]  # Harmonics to include
+amplitudes = [1.0, 0.5, 0.3, 0.2, 0.1, 0.05]  # Decreasing amplitudes
+
+x = np.zeros(N)
+for i, amp in zip(harmonics, amplitudes):
+    # Introduce slight frequency offset to cause leakage
+    f_leaky = f0 * i * 1.02  # 2% offset to simulate non-bin alignment
+    x += amp * np.sin(2 * np.pi * f_leaky * t)
+
+# Compute DFT
+X = np.fft.fft(x)
+freqs = np.fft.fftfreq(N, d=1/fs)
+
+# Only take the positive frequencies
+half_N = N // 2
+X_mag = np.abs(X[:half_N])
+freqs = freqs[:half_N]
+
+# Plot the result
+plt.figure(figsize=(10, 6))
+plt.plot(freqs, X_mag)
+plt.title('Simulated Spectrum with Spectral Leakage (A3 Guitar Note)')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Magnitude')
+plt.grid(True)
+plt.xlim(0, 2000)  # Show up to 2 kHz
+plt.show()
+
