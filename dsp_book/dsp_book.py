@@ -1888,3 +1888,43 @@ plt.show()
 
 
 
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+N1 = 8  # Original 8-point sequence
+N2 = 16  # Zero-padded sequence (16 points)
+
+# Create a cosine wave for two cycles at a frequency corresponding to N1 points
+n1 = np.arange(N1)
+cos_wave = np.cos(2 * np.pi * n1 / N1)
+
+# Zero-padding to create a new frequency-domain sequence X2(m) with N2 points
+n2 = np.arange(N2)
+cos_wave_extended = np.cos(2 * np.pi * n2 / N2)
+
+# Plot both x1(n) and x2(n)
+plt.figure(figsize=(14, 6))
+
+# Plot original x1(n)
+plt.subplot(1, 2, 1)
+plt.stem(n1, cos_wave, basefmt=" ")
+plt.title("x1(n) - Original 8-point Cosine")
+plt.xlabel("n")
+plt.ylabel("x1(n)")
+plt.grid(True)
+
+# Plot zero-padded x2(n)
+plt.subplot(1, 2, 2)
+plt.stem(n2, cos_wave_extended, basefmt=" ")
+plt.title("x2(n) - Zero-padded 16-point Cosine")
+plt.xlabel("n")
+plt.ylabel("x2(n)")
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+
