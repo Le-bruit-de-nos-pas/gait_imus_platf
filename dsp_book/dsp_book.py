@@ -1741,3 +1741,22 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+
+
+
+# Zoom in around the main peak
+zoom_range = slice(25, 32)
+
+plt.figure(figsize=(10, 5))
+plt.plot(freq_N[zoom_range], np.abs(X_N)[zoom_range], 'o-', label='N-point DFT')
+plt.plot(freq_Q[zoom_range.start * Q // N : zoom_range.stop * Q // N],
+         np.abs(X_Q)[zoom_range.start * Q // N : zoom_range.stop * Q // N],
+         '--', label='Zero-padded Q-point DFT')
+plt.title('Zoomed-in View: Effect of Zero-Padding on the DFT')
+plt.xlabel('Frequency Bin (scaled to N)')
+plt.ylabel('Magnitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
