@@ -1790,3 +1790,45 @@ plt.tight_layout()
 plt.show()
 
 
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define original parameters
+N = 64  # Original number of samples
+fs = 100 * N  # Sampling frequency from given spacing of 100 Hz
+delta_f_original = fs / N
+
+# Zero-padding
+M = 5 * N  # New DFT length
+delta_f_padded = fs / M
+
+
+# Frequency axes for original and zero-padded DFTs
+freq_axis_N = np.fft.fftfreq(N, d=1/fs)
+freq_axis_M = np.fft.fftfreq(M, d=1/fs)
+
+# Example signal: a cosine at bin 5 of N-point DFT
+x = np.cos(2 * np.pi * 5 * np.arange(N) / N)
+x_zp = np.pad(x, (0, M - N), 'constant')  # zero-padded signal
+
+# DFTs
+X_N = np.fft.fft(x, n=N)
+X_M = np.fft.fft(x_zp, n=M)
+
+
+# Plot the magnitude spectra (first half only)
+plt.figure(figsize=(12, 6))
+plt.plot(freq_axis_N[:N//2], np.abs(X_N[:N//2]), 'o-', label='Original DFT (Δf = 100 Hz)')
+plt.plot(freq_axis_M[:M//2], np.abs(X_M[:M//2]), '--', label='Zero-padded DFT (Δf = 20 Hz)')
+plt.title('Effect of Zero-Padding on DFT Frequency Resolution')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Magnitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
