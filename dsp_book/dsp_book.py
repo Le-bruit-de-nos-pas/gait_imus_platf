@@ -1698,3 +1698,46 @@ plt.show()
 error = np.max(np.abs(h_standard - h_alternate))
 print(f'Maximum absolute difference between the two definitions: {error:.2e}')
 
+
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Original singal parameters
+N = 32 # number of samples
+f = 3 # frequency in cycles per N samples
+Q = 128 # zero padded length Q > N, power of 2
+
+# Time indices
+n = np.arange(N)
+n_zp = np.arange(Q)
+
+# original signal cosine wave with 3 cycles over N samples
+x = np.cos(2*np.pi*f*n/N)
+
+# zero padded signal
+x_zp = np.pad(x, (0, Q-N), 'constant')
+
+# Compute DFTs
+X_N = np.fft.fft(x, n=N)
+X_Q = np.fft.fft(x_zp, n=Q)
+
+# Frequency axes
+freq_N = np.arange(N)
+freq_Q = np.arange(Q) * N/Q # Scale to original N, more point but same min-max
+
+# Plotting
+plt.figure(figsize=(12,6))
+plt.plot(freq_N, np.abs(X_N), 'o-', label='N-point DFT')
+plt.plot(freq_Q, np.abs(X_Q), '--', label='Zero-padded Q-point DFT')
+plt.title('Effect of Zero-Padding on the DFT')
+plt.xlabel('Frequency Bin (scaled to N)')
+plt.ylabel('Magnitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
