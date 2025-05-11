@@ -1839,3 +1839,52 @@ plt.show()
 
 
 
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set random seed for reproducibility
+np.random.seed(0)
+
+# Parameters
+N_short = 100
+N_long = 1_000_000
+signal_bin = 20  # Bin where the weak signal will be added
+
+# Generate weak sinusoidal signal + white noise for short and long sequences
+amplitude = 0.01  # Very weak signal
+noise_std = 1.0   # Background noise
+
+# Short sequence
+n_short = np.arange(N_short)
+x_short = amplitude * np.exp(1j * 2 * np.pi * signal_bin * n_short / N_short) + np.random.normal(0, noise_std, N_short)
+X_short = np.fft.fft(x_short)
+
+# Long sequence
+n_long = np.arange(N_long)
+x_long = amplitude * np.exp(1j * 2 * np.pi * signal_bin * n_long / N_long) + np.random.normal(0, noise_std, N_long)
+X_long = np.fft.fft(x_long)
+
+# Plot magnitudes
+plt.figure(figsize=(14, 6))
+
+plt.subplot(1, 2, 1)
+plt.plot(20 * np.log10(np.abs(X_short[:N_short // 2])), label='Short DFT (100-pt)')
+plt.title("Short DFT (100 samples)")
+plt.xlabel("Frequency Bin")
+plt.ylabel("Magnitude (dB)")
+plt.grid(True)
+
+plt.subplot(1, 2, 2)
+plt.plot(20 * np.log10(np.abs(X_long[:N_long // 2])), label='Long DFT (1M-pt)', linewidth=0.7)
+plt.title("Long DFT (1,000,000 samples)")
+plt.xlabel("Frequency Bin")
+plt.ylabel("Magnitude (dB)")
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+
+
+
