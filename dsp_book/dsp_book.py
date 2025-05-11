@@ -1760,3 +1760,33 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+
+# Apply a Hanning window to the original signal
+hanning_window = np.hanning(N)
+x_windowed = x * hanning_window
+
+# Zero-pad the windowed signal to length Q
+xw_zp = np.pad(x_windowed, (0, Q - N), 'constant')
+
+# Compute DFT of the windowed and zero-padded signal
+Xw_Q = np.fft.fft(xw_zp, n=Q)
+
+# Plot the zoomed-in spectrum of the windowed signal
+plt.figure(figsize=(10, 5))
+plt.plot(freq_Q[10 * Q // N : 30 * Q // N],
+         np.abs(Xw_Q)[10 * Q // N : 30 * Q // N],
+         label='Zero-padded Q-point DFT (Hanning window)')
+plt.title('Zoomed-in Spectrum Using Hanning Window')
+plt.xlabel('Frequency Bin (scaled to N)')
+plt.ylabel('Magnitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+
