@@ -2043,3 +2043,41 @@ plt.show()
 # Display the DC component value
 X0_magnitude
 
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Analog noise frequency (fixed)
+f_noise = 15e3  # 15 kHz
+
+# Sampling frequencies to test (19 kHz to 21 kHz)
+fs_values = np.linspace(19e3, 21e3, 500)
+
+# Function to compute aliased frequency given analog freq and sampling freq
+def alias_freq(f, fs):
+    # Find k that minimizes the alias frequency within Nyquist range
+    k = int(np.round(f / fs))
+    f_alias = abs(f - k * fs)
+    # If aliased frequency is above Nyquist, fold back
+    if f_alias > fs / 2:
+        f_alias = fs - f_alias
+    return f_alias
+
+# Calculate aliased frequencies for all sampling frequencies
+aliases = [alias_freq(f_noise, fs) for fs in fs_values]
+
+# Plot results
+plt.figure(figsize=(10, 5))
+plt.plot(fs_values / 1e3, np.array(aliases) / 1e3, label='Aliased Frequency')
+plt.axvline(20, color='r', linestyle='--', label='fs = 20 kHz')
+plt.axvline(19, color='g', linestyle='--', label='fs = 19 kHz')
+plt.xlabel('Sampling Frequency (kHz)')
+plt.ylabel('Aliased Frequency (kHz)')
+plt.title('Aliased Frequency of 15 kHz Noise vs Sampling Frequency')
+plt.legend()
+plt.grid(True)
+plt.show()
+
