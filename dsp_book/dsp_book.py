@@ -1961,3 +1961,44 @@ plt.grid(True)
 plt.xlim(0, 2000)  # Zoom into 0-2000 Hz for better visualization
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+# Original parameters
+original_N = 3800  # Original number of samples
+duration = 2       # seconds
+fs = original_N / duration  # Sampling rate = 1900 Hz
+
+# Time vector for the original signal
+t_original = np.arange(original_N) / fs
+
+# Create a test signal: mix of 100 Hz and 400 Hz components
+x_original = np.sin(2 * np.pi * 100 * t_original) + 0.5 * np.sin(2 * np.pi * 400 * t_original)
+
+# Zero-pad to the next power of 2 (4096 samples)
+N_fft = 4096
+x_padded = np.pad(x_original, (0, N_fft - original_N), mode='constant')
+
+# Compute FFT
+X_fft = np.fft.fft(x_padded)
+X_mag = np.abs(X_fft)[:N_fft // 2]
+frequencies = np.fft.fftfreq(N_fft, d=1/fs)[:N_fft // 2]
+
+# Plot the frequency spectrum
+plt.figure(figsize=(12, 5))
+plt.plot(frequencies, X_mag)
+plt.title('Zero-Padded FFT Spectrum (N = 4096)')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Magnitude')
+plt.grid(True)
+plt.xlim(0, 1000)  # Focus on 0–1000 Hz
+plt.tight_layout()
+plt.show()
