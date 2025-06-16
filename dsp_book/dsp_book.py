@@ -1928,3 +1928,36 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Sampling parameters
+fs = 44100  # Sampling rate in Hz
+N = 44100   # Number of samples to get 1 Hz frequency resolution
+t = np.arange(N) / fs  # Time vector
+
+# Create a signal composed of two sinusoids (e.g., 440 Hz and 880 Hz)
+f1 = 440  # Frequency of first tone (A4)
+f2 = 880  # Frequency of second tone (A5)
+x = np.sin(2 * np.pi * f1 * t) + 0.5 * np.sin(2 * np.pi * f2 * t) + 0.5 * np.sin(2 * np.pi * 1400 * t)
+
+# Compute FFT
+X = np.fft.fft(x)
+X_mag = np.abs(X)[:N//2]  # Take magnitude and keep only the positive frequencies
+frequencies = np.fft.fftfreq(N, d=1/fs)[:N//2]
+
+# Plot the frequency spectrum
+plt.figure(figsize=(12, 5))
+plt.plot(frequencies, X_mag)
+plt.title('Frequency Spectrum of x(n)')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Magnitude')
+plt.grid(True)
+plt.xlim(0, 2000)  # Zoom into 0-2000 Hz for better visualization
+plt.tight_layout()
+plt.show()
