@@ -2002,3 +2002,44 @@ plt.grid(True)
 plt.xlim(0, 1000)  # Focus on 0–1000 Hz
 plt.tight_layout()
 plt.show()
+
+
+
+
+# Re-import libraries due to kernel reset
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Simulation parameters
+fs = 100  # Minimum sampling rate (Hz)
+N = 2048  # Number of samples
+t = np.arange(N) / fs  # Time vector
+
+# Simulate the x(n) signal: 50 Hz sinusoid + DC bias of 17
+freq = 50  # Frequency of sinusoid in Hz
+amplitude = 1.0  # Arbitrary amplitude for sinusoid
+dc_bias = 17
+
+x = amplitude * np.sin(2 * np.pi * freq * t) + dc_bias
+
+# Compute FFT
+X = np.fft.fft(x)
+X_mag = np.abs(X)
+
+# Extract DC component (X[0])
+X0_magnitude = np.abs(X[0])
+
+# Plot magnitude spectrum
+frequencies = np.fft.fftfreq(N, d=1/fs)
+plt.figure(figsize=(12, 5))
+plt.plot(frequencies[:N//2], X_mag[:N//2])
+plt.title(f'FFT Magnitude Spectrum (DC = {X0_magnitude:.0f})')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Magnitude')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# Display the DC component value
+X0_magnitude
+
